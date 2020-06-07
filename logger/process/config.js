@@ -51,15 +51,18 @@ const Config = {
     },
     error: {
       appenders: ['error'],
-      level: 'error'
+      level: 'error',
+      enableCallStack: true
     },
     warning: {
       appenders: ['warning'],
-      level: 'warn'
+      level: 'warn',
+      enableCallStack: true
     },
     stderr: {
       appenders: ['stderr'],
-      level: 'error'
+      level: 'error',
+      enableCallStack: true
     },
     stdout: {
       appenders: ['stdout'],

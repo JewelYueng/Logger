@@ -1,25 +1,33 @@
 const log4js = require("log4js");
-
+const layout = {
+  type: 'pattern',
+  pattern: '%d{yyyy-MM-dd hh:mm:ss} %h-%z %s %m%n'
+}
 
 class Logger {
   constructor(config) {
-    this.init(config)
-  }
-  init(config) {
-    log4js.configure(config)
-    Object.keys(config.categories).forEach(c => {
-      this[`${c}Logger`] = log4js.getLogger()
+    Object.keys(config.appenders).forEach(a => {
+      config.appenders[a].layout = layout
     })
+    log4js.configure(config)
+    this.logger = log4js
   }
   send({
     values,
     type
   }) {
-    this[`${type}Logger`][type](this.render(values))
+    this.logger.getLogger()[type](this.render(values))
   }
   render(val) {
     let middle = val.some(v => /\s/.test(v)) ? '\t' : ' '
-    return val.join(middle)
+    let former = []
+    let latter = []
+    val.forEach(v => {
+      /\s/.test(v) && /\t/.test(v) ?
+        latter.push(v):
+        former.push(v)
+    })
+    return [...former, ...latter].join(middle)
   }
 }
 

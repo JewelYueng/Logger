@@ -1,4 +1,4 @@
-const Logger = require('./index')
+const Logger = require('../index')
 const logConfig = require('./config')
 // 获取进程信息
 const getPID = function () {
@@ -15,8 +15,17 @@ const getPName = function () {
 class ProcessLogger extends Logger {
   constructor() {
     super(logConfig)
+    Object.keys(logConfig.categories).forEach(c => {
+      this[`${c}Logger`] = this.logger.getLogger(c)
+    })
   }
-  
+  send({
+    values,
+    type
+  }) {
+    console.log(this[`${type}Logger`])
+    this[`${type}Logger`][type](this.render(values))
+  }
 }
 const ProLogger = new ProcessLogger()
 module.exports = ProLogger
