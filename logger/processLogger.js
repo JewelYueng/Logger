@@ -5,12 +5,18 @@ const getPID = function () {
   return process.pid
 }
 const getPName = function () {
-  return process.title
+  let ret = process.title
+  if(process.platform.substring(0,3) === 'win'){
+    let paths = ret.split('\\')
+    ret = paths[paths.length - 1]
+  }
+  return ret
 }
 class ProcessLogger extends Logger {
   constructor() {
     super(logConfig)
   }
+  
 }
 const ProLogger = new ProcessLogger()
 module.exports = ProLogger

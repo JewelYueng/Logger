@@ -11,10 +11,16 @@ class Logger {
       this[`${c}Logger`] = log4js.getLogger()
     })
   }
-  send({ msg, type }) {
-    this[`${type}Logger`][type](msg)
+  send({
+    values,
+    type
+  }) {
+    this[`${type}Logger`][type](this.render(values))
   }
-  
-} 
+  render(val) {
+    let middle = val.some(v => /\s/.test(v)) ? '\t' : ' '
+    return val.join(middle)
+  }
+}
 
 module.exports = Logger
